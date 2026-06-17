@@ -1,4 +1,4 @@
-import { ConnectDB } from "@/lib/db";
+import { ConnectDB } from "@/lib/dbConnect";
 import User from "@/models/User";
  export async function GET(){
     await ConnectDB();
