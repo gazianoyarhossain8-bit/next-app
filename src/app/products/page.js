@@ -1,53 +1,62 @@
-"use client"
-import { useState } from 'react'
+"use client";
+import { useState } from "react";
+import Link from "next/link";
 
-export default function Example() {
-  const [products, setProducts] = useState([]);
 
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch('/api/products');
-      const data = await res.json();
-      setProducts(data);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    }
-  };
+async function getProducts() {
+  const[products, setPrducts] = useState([]);
+  const res = await fetch(
+    "https://fakestoreapi.com/products"
+  );
 
-  useState(() => {
-    fetchProducts();
-  }, []);
+  if (!res.ok) {
+    throw new Error("Failed to fetch products");
+  }
+
+  return res.json();
+}
+
+export default async function ProductsPage() {
+  const products = await getProducts();
 
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900">Customers also purchased</h2>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="mb-8 text-3xl font-bold">
+        All Products
+      </h1>
 
-        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
-            <div key={product._id} className="group relative">
+      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {products.map((product) => (
+          <Link
+            key={product.id}
+            href={`/products/${product.id}`}
+          >
+            <div className="h-full cursor-pointer rounded-lg border p-4 shadow-sm transition hover:shadow-lg">
               <img
-                alt={product.imageAlt}
                 src={product.image}
-                className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
-              />
-              <div className="mt-4 flex justify-between">
-                <div>
-                  <h3 className="text-sm text-gray-700">
-                    <a href={product.href}>
-                      <span aria-hidden="true" className="absolute inset-0" />
-                      Name:{product.name}
-                    </a>
-                  </h3>
-                  <p className='text-black'>Color: {product.color}</p>
-                  <p className= "mt-1 text-sm text-gray-500">Description: {product.description}</p>
-                </div>
-                <p className="text-sm font-medium text-gray-900">price: ${product.price.toFixed(2)}</p>
-              </div>
+                alt={product.title}
+                className="mx-auto h-40 w-full object-contain"
+                />
+
+              <h3 className="mt-4 line-clamp-2 font-semibold">
+                {product.title}
+              </h3>
+
+              <p className="mt-2 text-lg font-bold text-green-600">
+                ${product.price}
+              </p>
+              <p className="mt-2 text-sm text-gray-600">
+                {product.category}
+              </p>
+              <p className="mt-2 text-sm text-gray-500">
+                {product.description.length > 100
+                  ? product.description.substring(0, 100) + "..."
+                  : product.description}
+              </p>
             </div>
-          ))}
-        </div>
+          </Link>
+        ))}
       </div>
     </div>
-  )
+  );
 }

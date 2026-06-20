@@ -18,6 +18,10 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    cateogery:{
+      type: String,
+      required: true,
+    },
     color: {
       type: String,
       required: true,
