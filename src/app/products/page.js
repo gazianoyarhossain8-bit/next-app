@@ -1,23 +1,23 @@
 "use client";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
+export default function ProductsPage() {
+  const [products, setProducts] = useState([]);
 
-async function getProducts() {
-  const[products, setPrducts] = useState([]);
-  const res = await fetch(
-    "https://fakestoreapi.com/products"
-  );
+  useEffect(() => {
+    async function getProducts() {
+      const res = await fetch(
+        "https://fakestoreapi.com/products"
+      );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch products");
-  }
+      const data = await res.json();
+      setProducts(data);
+    }
 
-  return res.json();
-}
-
-export default async function ProductsPage() {
-  const products = await getProducts();
+    getProducts();
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -36,7 +36,7 @@ export default async function ProductsPage() {
                 src={product.image}
                 alt={product.title}
                 className="mx-auto h-40 w-full object-contain"
-                />
+              />
 
               <h3 className="mt-4 line-clamp-2 font-semibold">
                 {product.title}
@@ -44,14 +44,6 @@ export default async function ProductsPage() {
 
               <p className="mt-2 text-lg font-bold text-green-600">
                 ${product.price}
-              </p>
-              <p className="mt-2 text-sm text-gray-600">
-                {product.category}
-              </p>
-              <p className="mt-2 text-sm text-gray-500">
-                {product.description.length > 100
-                  ? product.description.substring(0, 100) + "..."
-                  : product.description}
               </p>
             </div>
           </Link>
