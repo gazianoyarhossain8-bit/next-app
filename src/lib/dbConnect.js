@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 let isConnected = false;
 
-export async function dbConnect() {
+ async function dbConnect() {
   if (isConnected) return;
 
   try {
@@ -13,3 +13,4 @@ export async function dbConnect() {
     console.log(error);
   }
 }
+export { dbConnect };
