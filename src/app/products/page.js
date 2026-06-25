@@ -9,7 +9,7 @@ export default function ProductsPage() {
   useEffect(() => {
     async function getProducts() {
       const res = await fetch(
-        "https://next-app-pi-ashen.vercel.app/api/products"
+        "http://localhost:3000/api/products"
       );
 
       const data = await res.json();
