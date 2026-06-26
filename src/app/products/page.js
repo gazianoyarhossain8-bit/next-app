@@ -33,7 +33,7 @@ export default function ProductsPage() {
           >
             <div className="h-full cursor-pointer rounded-lg border p-4 shadow-sm transition hover:shadow-lg">
               <img
-                src={product.image}
+                src={`${product.imageUrl}`}
                 alt={product.title}
                 className="mx-auto h-40 w-full object-contain"
               />
