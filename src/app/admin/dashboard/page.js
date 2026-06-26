@@ -62,6 +62,20 @@ export default function AdminDashboard() {
     }
   };
 
+  const handlFetchProducts = async () => {
+    try {
+      const res = await fetch("/api/products");
+      const data = await res.json();
+      console.log(data);
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    handlFetchProducts();
+  }, []);
+
   return (
     <div className="max-w-md mx-auto mt-10">
       <h1 className="text-2xl font-bold mb-5">
